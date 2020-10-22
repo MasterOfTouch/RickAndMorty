@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_micro">4dp</dimen>
+    <dimen name="progress_bar_size">64dp</dimen>
+    <dimen name="button_size">48dp</dimen>
+    <dimen name="button_half_size">24dp</dimen>
+</resources>

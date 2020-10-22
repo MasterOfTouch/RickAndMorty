@@ -1,12 +1,11 @@
 package com.example.rickandmorty
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.core.view.doOnLayout
-import androidx.core.view.updatePadding
+import androidx.appcompat.app.AppCompatActivity
 import com.example.rickandmorty.ui.character.list.CharacterListFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ContentActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {

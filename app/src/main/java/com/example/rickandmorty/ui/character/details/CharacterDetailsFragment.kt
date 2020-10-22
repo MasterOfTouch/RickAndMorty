@@ -7,15 +7,16 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.rickandmorty.R
 import com.example.rickandmorty.ui.bindStatusAndSpecies
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 private const val CHARACTER_ID_EXTRA = "character_id_extra"
 
+@AndroidEntryPoint
 class CharacterDetailsFragment : Fragment(R.layout.characters_details_fragment) {
 
   companion object {
@@ -26,30 +27,25 @@ class CharacterDetailsFragment : Fragment(R.layout.characters_details_fragment) 
     }
   }
 
-  private lateinit var viewModel: CharacterDetailsModel
+  @Inject
+  lateinit var detailViewModelFactory: CharacterDetailsModel.AssistedFactory
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    viewModel = ViewModelProvider(
-      this,
-      CharacterDetailsModelFactory(
-        requireArguments().getInt(CHARACTER_ID_EXTRA)
-      )
-    ).get(CharacterDetailsModel::class.java)
+  private val characterId: Int by lazy { requireArguments().getInt(CHARACTER_ID_EXTRA) }
 
-    lifecycleScope.launchWhenStarted {
+  private val viewModel: CharacterDetailsModel by viewModels {
+    CharacterDetailsModel.provideFactory(detailViewModelFactory, characterId)
+  }
 
-      requireView().findViewById<View>(R.id.backButton).setOnClickListener {
-        requireActivity().onBackPressed()
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    viewModel.state.observe(viewLifecycleOwner) { state ->
+      when (state) {
+        CharacterDetailsState.Loading -> showProgress()
+        is CharacterDetailsState.Content -> showContent(state.details)
+        is CharacterDetailsState.Error -> showError()
       }
-
-      viewModel.characterDetailsState.collect { state ->
-        when (state) {
-          CharacterDetailsState.Loading -> showProgress()
-          is CharacterDetailsState.Content -> showContent(state.details)
-          is CharacterDetailsState.Error -> showError()
-        }
-      }
+    }
+    requireView().findViewById<View>(R.id.backButton).setOnClickListener {
+      requireActivity().onBackPressed()
     }
   }
 

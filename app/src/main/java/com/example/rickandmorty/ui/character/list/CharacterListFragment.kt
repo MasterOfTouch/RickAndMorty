@@ -1,32 +1,28 @@
 package com.example.rickandmorty.ui.character.list
 
 import android.graphics.Rect
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.R
 import com.example.rickandmorty.ui.character.details.CharacterDetailsFragment
 import com.example.rickandmorty.ui.character.details.CharacterDetailsViewData
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterListFragment : Fragment(R.layout.characters_list_fragment) {
 
-  private lateinit var viewModel: CharacterListModel
+  private val viewModel: CharacterListModel by viewModels()
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    viewModel = ViewModelProvider(this).get(CharacterListModel::class.java)
-    lifecycleScope.launchWhenStarted {
-      viewModel.characterListState.collect { state ->
-        when (state) {
-          CharacterListState.Loading -> showProgress()
-          is CharacterListState.Content -> showContent(state.data)
-          is CharacterListState.Error -> showError()
-        }
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    viewModel.state.observe(viewLifecycleOwner) { state ->
+      when (state) {
+        CharacterListState.Loading -> showProgress()
+        is CharacterListState.Content -> showContent(state.data)
+        is CharacterListState.Error -> showError()
       }
     }
   }

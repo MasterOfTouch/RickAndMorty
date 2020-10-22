@@ -1,6 +1,8 @@
 package com.example.rickandmorty.ui.character.list
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmorty.data.character.CharacterRepo
 import com.example.rickandmorty.ui.character.details.CharacterDetailsViewData
@@ -8,16 +10,19 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class CharacterListModel : ViewModel() {
 
-  private val repo = CharacterRepo
+class CharacterListModel @ViewModelInject constructor(
+  private val repo: CharacterRepo
+) : ViewModel() {
 
-  val characterListState: MutableStateFlow<CharacterListState> = MutableStateFlow(
+  private val characterListState: MutableStateFlow<CharacterListState> = MutableStateFlow(
     CharacterListState.Loading
   )
   private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
     characterListState.tryEmit(CharacterListState.Error(exception.message.toString()))
   }
+
+  val state = characterListState.asLiveData()
 
   init {
     loadCharacterList()

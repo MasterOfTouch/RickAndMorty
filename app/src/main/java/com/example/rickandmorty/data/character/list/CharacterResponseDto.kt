@@ -4,13 +4,13 @@ import com.example.rickandmorty.data.character.details.CharacterDetailsDto
 import kotlinx.serialization.Serializable
 
 @Serializable
-class CharacterResponseDto(
+data class CharacterResponseDto(
   val info: InfoDto,
   val results: List<CharacterDetailsDto>
 )
 
 @Serializable
-class InfoDto(
+data class InfoDto(
   val count: Int,
   val pages: Int,
   val next: String?,

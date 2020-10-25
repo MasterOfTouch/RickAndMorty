@@ -3,7 +3,7 @@ package com.example.rickandmorty.ui.character.details
 import com.example.rickandmorty.data.character.details.CharacterDetailsDto
 import com.example.rickandmorty.ui.character.CharacterStatusViewData
 
-class CharacterDetailsViewData(
+data class CharacterDetailsViewData(
   val id: Int,
   val name: String,
   val avatar: String,
@@ -14,7 +14,7 @@ class CharacterDetailsViewData(
   val firstSeen: String
 )
 
-fun CharacterDetailsDto.toView() = CharacterDetailsViewData(
+fun CharacterDetailsDto.toContent() = CharacterDetailsViewData(
   id = id,
   name = name,
   avatar = image,

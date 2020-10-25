@@ -12,7 +12,7 @@ private const val CHARACTER_ID = "characterId"
 interface CharacterApi {
 
   @GET(CHARACTER_CONTROLLER)
-  suspend fun getAllCharacters(): CharacterResponseDto
+  suspend fun getCharactersList(): CharacterResponseDto
 
   @GET("$CHARACTER_CONTROLLER{$CHARACTER_ID}")
   suspend fun getCharacterDetails(

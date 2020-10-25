@@ -29,15 +29,14 @@ class CharacterListModel @ViewModelInject constructor(
   }
 
   fun onRetry() {
+    characterListState.tryEmit(CharacterListState.Loading)
     loadCharacterList()
   }
 
-  private fun loadCharacterList() {
-    viewModelScope.launch(coroutineExceptionHandler) {
-      characterListState.tryEmit(CharacterListState.Loading)
-      val items = repo.getCharactersList().toView()
-      characterListState.tryEmit(CharacterListState.Content(items))
-    }
+  private fun loadCharacterList() = viewModelScope.launch(coroutineExceptionHandler) {
+
+    val content = repo.getCharactersList().toContent()
+    characterListState.tryEmit(CharacterListState.Content(content))
   }
 }
 

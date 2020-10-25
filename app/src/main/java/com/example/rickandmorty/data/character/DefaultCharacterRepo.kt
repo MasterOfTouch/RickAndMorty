@@ -8,7 +8,7 @@ class DefaultCharacterRepo(
 ) : CharacterRepo {
 
   override suspend fun getCharactersList(): CharacterResponseDto {
-    return api.getAllCharacters()
+    return api.getCharactersList()
   }
 
   override suspend fun getCharacterDetails(characterId: Int): CharacterDetailsDto {

@@ -37,7 +37,7 @@ class CharacterDetailsModel @AssistedInject constructor(
   private fun loadCharacterDetails() {
     viewModelScope.launch(coroutineExceptionHandler) {
       characterDetailsState.tryEmit(CharacterDetailsState.Loading)
-      val details = repo.getCharacterDetails(characterId).toView()
+      val details = repo.getCharacterDetails(characterId).toContent()
       characterDetailsState.tryEmit(CharacterDetailsState.Content(details))
     }
   }

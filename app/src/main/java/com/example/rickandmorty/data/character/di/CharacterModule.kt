@@ -14,6 +14,7 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Converter
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 
 @Module
@@ -23,7 +24,9 @@ object CharacterModule {
   @Provides
   fun provideMediaType(): MediaType = "application/json".toMediaType()
 
+  @Suppress("JSON_FORMAT_REDUNDANT")
   @Provides
+  @Singleton
   fun provideConverterFactory(mediaType: MediaType): Converter.Factory = Json {
     ignoreUnknownKeys = true
   }.asConverterFactory(mediaType)

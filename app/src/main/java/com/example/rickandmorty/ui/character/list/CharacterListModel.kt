@@ -1,17 +1,19 @@
 package com.example.rickandmorty.ui.character.list
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmorty.data.character.CharacterRepo
 import com.example.rickandmorty.ui.character.details.CharacterDetailsViewData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class CharacterListModel @ViewModelInject constructor(
+@HiltViewModel
+class CharacterListModel @Inject constructor(
   private val repo: CharacterRepo
 ) : ViewModel() {
 

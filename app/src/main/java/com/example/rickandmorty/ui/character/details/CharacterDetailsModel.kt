@@ -1,12 +1,11 @@
 package com.example.rickandmorty.ui.character.details
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmorty.data.character.CharacterRepo
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -39,23 +38,6 @@ class CharacterDetailsModel @AssistedInject constructor(
       characterDetailsState.tryEmit(CharacterDetailsState.Loading)
       val details = repo.getCharacterDetails(characterId).toContent()
       characterDetailsState.tryEmit(CharacterDetailsState.Content(details))
-    }
-  }
-
-  @AssistedInject.Factory
-  interface AssistedFactory {
-    fun create(characterId: Int): CharacterDetailsModel
-  }
-
-  companion object {
-    fun provideFactory(
-      assistedFactory: AssistedFactory,
-      characterId: Int
-    ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-      @Suppress("UNCHECKED_CAST")
-      override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return assistedFactory.create(characterId) as T
-      }
     }
   }
 }

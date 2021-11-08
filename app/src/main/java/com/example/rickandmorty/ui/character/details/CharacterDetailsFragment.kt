@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.rickandmorty.R
 import com.example.rickandmorty.ui.bindStatusAndSpecies
+import com.example.rickandmorty.ui.character.details.di.CharacterDetailsHiltModule
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -28,12 +29,12 @@ class CharacterDetailsFragment : Fragment(R.layout.characters_details_fragment) 
   }
 
   @Inject
-  lateinit var detailViewModelFactory: CharacterDetailsModel.AssistedFactory
+  lateinit var detailViewModelFactory: CharacterDetailsHiltModule.AssistedFactory
 
   private val characterId: Int by lazy { requireArguments().getInt(CHARACTER_ID_EXTRA) }
 
   private val viewModel: CharacterDetailsModel by viewModels {
-    CharacterDetailsModel.provideFactory(detailViewModelFactory, characterId)
+    CharacterDetailsHiltModule.provideFactory(detailViewModelFactory, characterId)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
